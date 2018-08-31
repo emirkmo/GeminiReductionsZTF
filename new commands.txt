@@ -1,0 +1,53 @@
+gstransform inimages=gstest//@object_b600_520_2.txt wavtran=gstest//@CuAr_b600_520_2.txt
+gstransform inimages=gstest//@object_b600_520_3.txt wavtran=gstest//@CuAr_b600_520_2.txt
+gstransform inimages=gstest//@object_b600_520_4.txt wavtran=gstest//@CuAr_b600_520_2.txt
+
+gstransform inimages=gstest//@object_b600_525_1.txt wavtran=gstest//@CuAr_B600_525_1.txt
+gstransform inimages=gstest//@object_b600_525_2.txt wavtran=gstest//@CuAr_B600_525_1.txt
+
+lacos_spec input=sn1_520 output=sn1_520_f.cr outmask=sn1_520_f.crmask gain=1.65 readn=4.06 xorder=9 yorder=3 sigclip=4.5 sigfrac=0.5 objlim=1.0 niter=3 verbose=yes mode=al
+lacos_spec input=sn2_520 output=sn2_520_f.cr outmask=sn2_520_f.crmask gain=1.65 readn=4.06 xorder=9 yorder=3 sigclip=4.5 sigfrac=0.5 objlim=1.0 niter=3 verbose=yes mode=al
+lacos_spec input=sn1_525 output=sn1_525_f.cr outmask=sn1_525_f.crmask gain=1.65 readn=4.06 xorder=9 yorder=3 sigclip=4.5 sigfrac=0.5 objlim=1.0 niter=3 verbose=yes mode=al
+lacos_spec input=sn2_525 output=sn2_525_f.cr outmask=sn2_525_f.crmask gain=1.65 readn=4.06 xorder=9 yorder=3 sigclip=4.5 sigfrac=0.5 objlim=1.0 niter=3 verbose=yes mode=al
+
+
+apall input=sn1_520_f.cr out=sn1_520_f.ms nfind=1 interactive=yes find=yes recenter=yes resize=yes edit=yes trace=yes fittrace=yes t_nsum = 50 t_nlost = 50 extract=yes extras=yes review=yes background=fit
+
+apall input=sn2_520_f.cr out=sn2_520_f.ms nfind=1 interactive=yes find=yes recenter=yes resize=yes edit=yes trace=yes fittrace=yes t_nsum = 50 t_nlost = 50 extract=yes extras=yes review=yes background=fit
+
+apall input=sn1_525_f.cr out=sn1_525_f.ms nfind=1 interactive=yes find=yes recenter=yes resize=yes edit=yes trace=yes fittrace=yes t_nsum = 50 t_nlost = 50 extract=yes extras=yes review=yes background=fit
+
+apall input=sn2_525_f.cr out=sn2_525_f.ms nfind=1 interactive=yes find=yes recenter=yes resize=yes edit=yes trace=yes fittrace=yes t_nsum = 50 t_nlost = 50 extract=yes extras=yes review=yes background=fit
+
+standard input=star1_520.ms output=stdstar1_520 star_name=eg131 airmass=1.13 exptime=120 answer=yes extinction=mk_extinct.txt caldir=gmos$calib/  observatory=Keck
+
+
+standard input=star2_520.ms output=stdstar2_520 star_name=bd284211 airmass=1.064 exptime=60 answer=yes extinction=mk_extinct.txt caldir=onedstds$iidscal/  observatory=Keck
+
+sensfunc standards=stdstar1_520 sensitivity=sensstar1 observatory=Keck order=4
+sensfunc standards=stdstar2_520 sensitivity=sensstar2 observatory=Keck order=4
+
+onedspec.calibrate input=sn1_520_f.ms out=sn1_520.f extinction=mk_extinct.txt observatory=Keck ignoreaps=yes sensitivity=sensstar1.fits
+onedspec.calibrate input=sn2_520_f.ms out=sn2_520.f extinction=mk_extinct.txt observatory=Keck ignoreaps=yes sensitivity=sensstar1.fits
+onedspec.calibrate input=sn1_525_f.ms out=sn1_525.f extinction=mk_extinct.txt observatory=Keck ignoreaps=yes sensitivity=sensstar1.fits
+onedspec.calibrate input=sn2_525_f.ms out=sn2_525.f extinction=mk_extinct.txt observatory=Keck ignoreaps=yes sensitivity=sensstar1.fits
+
+onedspec.calibrate input=sn1_520_f.ms out=sn1_520_2.f extinction=mk_extinct.txt observatory=Keck ignoreaps=yes sensitivity=sensstar2.fits
+onedspec.calibrate input=sn2_520_f.ms out=sn2_520_2.f extinction=mk_extinct.txt observatory=Keck ignoreaps=yes sensitivity=sensstar2.fits
+onedspec.calibrate input=sn1_525_f.ms out=sn1_525_2.f extinction=mk_extinct.txt observatory=Keck ignoreaps=yes sensitivity=sensstar2.fits
+onedspec.calibrate input=sn2_525_f.ms out=sn2_525_2.f extinction=mk_extinct.txt observatory=Keck ignoreaps=yes sensitivity=sensstar2.fits
+
+scombine input=sn1_520.f,sn2_520.f,sn1_525.f,sn2_525.f out=allcombine_std1.ms reject=avsigclip scale=median sample=5500:6500
+scombine input=sn1_520.f,sn2_520.f out=520only_std1.ms reject=avsigclip scale=median sample=5500:6500
+scombine input=sn1_525.f,sn2_525.f out=525only_std1.ms reject=avsigclip scale=median sample=5500:6500
+
+scombine input=sn1_520_2.f,sn2_520_2.f,sn1_525_2.f,sn2_525_2.f out=allcombine_std2.ms reject=avsigclip scale=median sample=5500:6500
+scombine input=sn1_520_2.f,sn2_520_2.f out=520only_std2.ms reject=avsigclip scale=median sample=5500:6500
+scombine input=sn1_525_2.f,sn2_525_2.f out=525only_std2.ms reject=avsigclip scale=median sample=5500:6500
+
+scombine input=520only_std1.ms,525only_std1.ms out=allcombine_v2_std1.ms reject=avsigclip scale=median sample=5500:6500
+scombine input=520only_std2.ms,525only_std2.ms out=allcombine_v2_std2.ms reject=avsigclip scale=median sample=5500:6500
+
+scombine input=sn1_520.f,sn2_520.f,sn1_525.f,sn2_525.f out=allcombine_v3_std1.ms reject=ccdclip scale=median sample=5500:6500 gain=1.65 rdnoise=4.06
+scombine input=sn1_520_2.f,sn2_520_2.f,sn1_525_2.f,sn2_525_2.f out=allcombine_v3_std2.ms reject=ccdclip scale=median sample=5500:6500 gain=1.65 rdnoise=4.06
+
