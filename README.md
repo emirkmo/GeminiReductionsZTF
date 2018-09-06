@@ -6,8 +6,12 @@ Use the scripts here to reduce Gemini spectra for ZTF infant SNe set-up
 
 These instructions will get you a copy of the project up and running on your local machine. Install Astroconda python virtual environment following the instructions here:
 https://astroconda.readthedocs.io/en/latest/getting_started.html
+
 Make sure to get the version with iraf and python 2.7.X
+
 On Mac OS X you also need XQuartz.
+
+
 Grab the task LA Cosmic for cosmic ray rejection, instructions for doing so can be found on Gemini's own data reduction cookbook:
 http://ast.noao.edu/sites/default/files/GMOS_Cookbook/GettingStarted.html
 or try this link:
@@ -57,10 +61,10 @@ Which will guide you through a semi-automated standard IRAF reduction. You will 
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## This is barely used minimally functioning code.
+## Disclaimer: This is barely used minimally functioning code.
 I basically used it to get rapid first look reductions for iPTF (and now ZTF) Gemini spectra.
 
-This code was written years ago and sparsely updated to simply function at a bare minimum level. The original goal was to take a series of IRAF reduction steps and transparently put them into a customizable python script. If people end up using it let me know and I can generalize it. If you notice something wrong please also email me. You can [find my contact information here](http://www.su.se/english/profiles/emka6994).
+This code was written *years ago* and sparsely updated to simply function at a bare minimum level. The original goal was to take a series of IRAF reduction steps and transparently put them into a customizable python script. If people end up using it let me know and I can generalize it. If you notice something wrong please also email me. You can [find my contact information here](http://www.su.se/english/profiles/emka6994). Absolutely no one should use this to judge the level of my coding skill or style.
 
-##Acknowledgements
+## Acknowledgements
 Everything here is based on a workshop given by Brad Cenko at an iPTF summer school in 2014. Christoffer Fremling & Emir Karamehmetoglu went through the initial drafting phase in 2014/2015. Since then it has been maintained and updated by Emir Karamehmetoglu several times.
