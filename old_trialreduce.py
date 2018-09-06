@@ -1,9 +1,17 @@
-import sys 
-from pyraf import iraf 
+import sys
+import os
+
+workingdir=os.getcwd()
+logincl_dir='/Users/emir/iraf'
+os.chdir(logincl_dir)
+from pyraf import iraf
+
+os.chdir(workingdir)
 
 iraf.gemini()
 iraf.gmos()
 iraf.stsdas()
+iraf.onedspec()
 
 yes='yes'
 no='no'
@@ -33,13 +41,13 @@ iraf.gsreduce(inimages='@object_b600_1.txt', flatim='b600_norm_flat_1.fits', fl_
 iraf.gsreduce(inimages='@CuAr_b600_1.txt', flatim='b600_norm_flat_1.fits', fl_bias=no)
 iraf.gsreduce(inimages='@object_r400_2.txt', flatim='r400_norm_flat_2.fits', fl_bias=no)
 iraf.gsreduce(inimages='@object_b600_2.txt', flatim='b600_norm_flat_2.fits', fl_bias=no)
-iraf.gsreduce(inimages='@CuAr_r400_2.txt', flatim='r400_norm_flat_2.fits', fl_bias=no) 
+iraf.gsreduce(inimages='@CuAr_r400_2.txt', flatim='r400_norm_flat_2.fits', fl_bias=no)
 iraf.gsreduce(inimages='@CuAr_b600_2.txt', flatim='b600_norm_flat_2.fits', fl_bias=no)
 
 #log?
 l.write('reduced=yes')
 
-#Wavelength calibrate ARCs in 2d 
+#Wavelength calibrate ARCs in 2d
 iraf.gswavelength(inimages='gs//@CuAr_r400_1.txt')
 iraf.gswavelength(inimages='gs//@CuAr_b600_1.txt')
 iraf.gswavelength(inimages='gs//@CuAr_r400_2.txt')
@@ -65,7 +73,7 @@ def read_sn(filename):
 	f.close()
 	return obje
 
-#Function to check if SN or CompStar	
+#Function to check if SN or CompStar
 def issn(obje):
 	import astropy.io.fits as fits
 	hdulist= fits.open(obje)
@@ -76,7 +84,7 @@ def issn(obje):
 	else:
 		print str(hdulist[0].header['object'])+' is a Comp Star'
 		return 'ptfstar'
-		
+
 #Function to read comp star data in IRAF format
 def read_comp(fname):
 	import astropy.io.fits as fits
@@ -86,7 +94,7 @@ def read_comp(fname):
 	cname=str(hdulist[0].header['object']).translate(None,'+-_').lower()
 	amass=float(str(hdulist[0].header['airmass']))
 	expotime=float(str(hdulist[0].header['exptime']))
-	return cname,amass,expotime	
+	return cname,amass,expotime
 
 #Read the Gemini outputs
 obj_r1=read_sn('object_r400_1.txt')
@@ -109,7 +117,7 @@ if 'sn' in out_r2:
 else:
 	ptfstar1_name,ptfstar1_air,ptfstar1_exp=read_comp(obj_r2)
 
-#Blue parts	
+#Blue parts
 out_b1=issn(obj_b1)+'2.fits'
 
 if 'sn' in out_b1:
@@ -190,7 +198,7 @@ sensstar2='sensstar2'
 
 #Fit Sensitivity Function
 iraf.sensfunc(standards=stdstar1, sensitivity=sensstar1, observatory='Keck', order=4)
-iraf.sensfunc(standards=stdstar2, sensitivity=sensstar2, observatory='Keck', order=4) 
+iraf.sensfunc(standards=stdstar2, sensitivity=sensstar2, observatory='Keck', order=4)
 
 ptfsn1f='ptfsn1.f'
 ptfsn2f='ptfsn2.f'
