@@ -50,7 +50,7 @@ Finally run the reduction script.
 python ztf_reduce.py
 ```
 
-Which will guide you through a semi-automated standard IRAF reduction. You will have to check and confirm the steps as they are shown. For more details or finer control, see the cookbook with the step by step instructions [Gemini Cookbook V2.docx](Gemini\ Cookbook\ V2.docx)
+Which will guide you through a semi-automated standard IRAF reduction. You will have to check and confirm the steps as they are shown. For more details or finer control, see the cookbook with the step by step instructions [Gemini Cookbook V2.docx](Gemini Cookbook V2.docx)
 
 
 ## License
